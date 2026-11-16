@@ -24,57 +24,90 @@
 </head>
 <body class="bg-darkbg text-slate-100 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- PANTALLA DE INICIO DE SESIÓN / REGISTRO -->
-    <div id="auth-screen" class="fixed inset-0 z-50 bg-darkbg flex items-center justify-center p-4 bg-cover bg-center" style="background-image: linear-gradient(to bottom right, rgba(6, 9, 17, 0.92), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1920&q=80');">
-        <div class="bg-cardbg/90 backdrop-blur-md border border-cardborder p-8 rounded-3xl max-w-md w-full shadow-2xl space-y-6">
+    <!-- PANTALLA DE INICIO DE SESIÓN / REGISTRO / RECUPERACIÓN -->
+    <div id="auth-screen" class="fixed inset-0 z-50 bg-darkbg flex items-center justify-center p-4 bg-cover bg-center" style="background-image: linear-gradient(to bottom right, rgba(6, 9, 17, 0.94), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1920&q=80');">
+        <div class="bg-cardbg/95 backdrop-blur-md border border-cardborder p-8 rounded-3xl max-w-md w-full shadow-2xl space-y-6">
             <div class="text-center space-y-2">
                 <div class="inline-flex bg-accent/20 p-3.5 rounded-2xl border border-accent/30 text-accent mb-1">
                     <i class="fa-solid fa-scale-balanced text-2xl"></i>
                 </div>
                 <h1 class="text-2xl font-extrabold tracking-wide text-white">NEXUS <span class="text-accent">ERP PRO</span></h1>
-                <p class="text-xs text-slate-400">Acceso al Sistema Contable y Base de Datos Empresarial</p>
+                <p class="text-xs text-slate-400">Seguridad Financiera y Base de Datos Cifrada</p>
             </div>
 
             <!-- Pestañas Login / Registro -->
-            <div class="grid grid-cols-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
-                <button onclick="toggleAuthMode('login')" id="btn-mode-login" class="py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition">Iniciar Sesión</button>
-                <button onclick="toggleAuthMode('register')" id="btn-mode-register" class="py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition">Crear Cuenta</button>
+            <div id="auth-tabs" class="grid grid-cols-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                <button onclick="switchAuthView('login')" id="tab-login" class="py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition">Iniciar Sesión</button>
+                <button onclick="switchAuthView('register')" id="tab-register" class="py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition">Crear Cuenta</button>
             </div>
 
-            <!-- Formulario -->
+            <!-- Formulario Dinámico -->
             <div class="space-y-4">
-                <div id="field-company" class="hidden">
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Nombre de la Empresa o Despacho</label>
-                    <input type="text" id="auth-company" placeholder="Ej: Inversiones Duarte S.A." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                <div id="view-login" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
+                        <input type="email" id="login-email" placeholder="usuario@empresa.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
+                        <input type="password" id="login-pass" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-500">Acceso Seguro SSL</span>
+                        <button onclick="switchAuthView('recover')" class="text-accent hover:underline">¿Olvidaste tu contraseña?</button>
+                    </div>
+                    <button onclick="handleLogin()" class="w-full bg-accent hover:bg-accenthover text-darkbg font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-accent/20">
+                        Entrar al Sistema
+                    </button>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Usuario o Correo Electrónico</label>
-                    <input type="text" id="auth-user" placeholder="contador@empresa.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+
+                <div id="view-register" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nombre de la Empresa o Despacho</label>
+                        <input type="text" id="reg-company" placeholder="Ej: Inversiones Duarte S.A." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico Válido</label>
+                        <input type="email" id="reg-email" placeholder="correo@dominio.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña Estricta (Mín. 6 caracteres, letras y números)</label>
+                        <input type="password" id="reg-pass" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <button onclick="handleRegister()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-emerald-500/20">
+                        Registrar Cuenta Estricta
+                    </button>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Contraseña</label>
-                    <input type="password" id="auth-pass" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+
+                <div id="view-recover" class="space-y-4 hidden">
+                    <p class="text-xs text-slate-300">Ingresa el correo electrónico asociado a tu cuenta para restablecer las credenciales de acceso.</p>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Correo Registrado</label>
+                        <input type="email" id="recover-email" placeholder="usuario@empresa.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nueva Contraseña</label>
+                        <input type="password" id="recover-pass" placeholder="Nueva contraseña segura" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="handleRecover()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-darkbg font-bold py-2.5 rounded-xl text-sm transition">Restablecer</button>
+                        <button onclick="switchAuthView('login')" class="px-4 bg-slate-800 text-slate-300 rounded-xl text-sm">Cancelar</button>
+                    </div>
                 </div>
-                <button onclick="handleAuth()" id="btn-auth-submit" class="w-full bg-accent hover:bg-accenthover text-darkbg font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-accent/20">
-                    Entrar al Sistema
-                </button>
             </div>
-            <p class="text-[11px] text-center text-slate-500">Cada cuenta guarda su propio historial contable por año fiscal.</p>
         </div>
     </div>
 
-    <!-- APLICACIÓN PRINCIPAL (OCULTA HASTA INICIAR SESIÓN) -->
+    <!-- APLICACIÓN PRINCIPAL -->
     <div id="app-container" class="hidden flex-col min-h-screen">
-
-        <!-- TICKER FINANCIERO SUPERIOR -->
         <div class="bg-slate-950 border-b border-slate-800 px-6 py-1.5 text-xs text-slate-400 flex justify-between items-center overflow-x-auto whitespace-nowrap">
             <div class="flex space-x-6">
-                <span><i class="fa-solid fa-coins text-amber-400 mr-1"></i> USD/NIO: <strong class="text-white">36.6243</strong> <span class="text-emerald-400">+0.02%</span></span>
-                <span><i class="fa-brands fa-bitcoin text-orange-400 mr-1"></i> BTC/USD: <strong class="text-white">$91,420.00</strong> <span class="text-emerald-400">+1.84%</span></span>
-                <span><i class="fa-solid fa-scale-balanced text-accent mr-1"></i> EUR/USD: <strong class="text-white">1.0850</strong> <span class="text-emerald-400">+0.15%</span></span>
+                <span><i class="fa-solid fa-coins text-amber-400 mr-1"></i> USD/NIO: <strong class="text-white">36.6243</strong></span>
+                <span><i class="fa-brands fa-bitcoin text-orange-400 mr-1"></i> BTC/USD: <strong class="text-white">$91,420.00</strong></span>
+                <span><i class="fa-solid fa-scale-balanced text-accent mr-1"></i> EUR/USD: <strong class="text-white">1.0850</strong></span>
             </div>
             <div class="flex items-center space-x-4">
-                <span class="text-slate-300 font-mono text-[11px]"><i class="fa-regular fa-calendar mr-1 text-accent"></i> Año Fiscal: 
+                <span class="text-slate-300 font-mono text-[11px]">Año Fiscal: 
                     <select id="fiscal-year" onchange="renderAll()" class="bg-slate-900 text-accent font-bold border border-slate-700 rounded px-1.5 py-0.5 ml-1">
                         <option value="2026" selected>2026</option>
                         <option value="2025">2025</option>
@@ -84,7 +117,6 @@
             </div>
         </div>
 
-        <!-- HEADER -->
         <header class="bg-cardbg border-b border-cardborder px-6 py-3.5 flex flex-wrap justify-between items-center gap-4 shadow-xl">
             <div class="flex items-center space-x-3">
                 <div class="bg-accent/20 p-2.5 rounded-xl border border-accent/30 text-accent">
@@ -96,9 +128,7 @@
                 </div>
             </div>
             <div class="flex items-center space-x-3">
-                <span id="header-user-badge" class="text-xs bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-slate-300">
-                    <i class="fa-solid fa-user-check text-emerald-400 mr-1.5"></i> Usuario
-                </span>
+                <span id="header-user-badge" class="text-xs bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-slate-300"></span>
                 <button onclick="logout()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3.5 py-1.5 rounded-xl transition font-semibold">
                     <i class="fa-solid fa-right-from-bracket mr-1"></i> Cerrar Sesión
                 </button>
@@ -106,29 +136,23 @@
         </header>
 
         <div class="flex flex-1 overflow-hidden">
-            <!-- MENÚ LATERAL -->
             <aside class="w-64 bg-cardbg border-r border-cardborder flex flex-col justify-between hidden md:flex">
                 <nav class="p-4 space-y-1.5">
                     <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Navegación</p>
                     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-accent text-darkbg transition">
-                        <i class="fa-solid fa-chart-line w-5"></i>
-                        <span>Panel Principal</span>
+                        <i class="fa-solid fa-chart-line w-5"></i><span>Panel Principal</span>
                     </button>
                     <button onclick="switchTab('ventas-express')" id="nav-ventas-express" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-cash-register w-5"></i>
-                        <span>Ventas (Auto-Asiento)</span>
+                        <i class="fa-solid fa-cash-register w-5"></i><span>Ventas (Auto-Asiento)</span>
                     </button>
                     <button onclick="switchTab('libro-diario')" id="nav-libro-diario" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-book w-5"></i>
-                        <span>Libro Diario</span>
+                        <i class="fa-solid fa-book w-5"></i><span>Libro Diario</span>
                     </button>
                     <button onclick="switchTab('cuentas-t')" id="nav-cuentas-t" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-t w-5"></i>
-                        <span>Cuentas T (Mayor)</span>
+                        <i class="fa-solid fa-t w-5"></i><span>Cuentas T (Mayor)</span>
                     </button>
                     <button onclick="switchTab('balance')" id="nav-balance" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-scale-balanced w-5"></i>
-                        <span>Balance General</span>
+                        <i class="fa-solid fa-scale-balanced w-5"></i><span>Balance General</span>
                     </button>
                 </nav>
                 <div class="p-4 border-t border-cardborder text-center space-y-2">
@@ -137,337 +161,250 @@
                 </div>
             </aside>
 
-            <!-- ÁREA DE CONTENIDO CENTRAL -->
             <main class="flex-1 overflow-y-auto p-6 bg-darkbg space-y-6">
-
-                <!-- SECCIÓN 1: PANEL PRINCIPAL CON PORTADA VISUAL -->
+                <!-- PANEL PRINCIPAL -->
                 <section id="tab-dashboard" class="space-y-6">
-                    
-                    <!-- PORTADA CON IMAGEN FINANCIERA Y BALANZA -->
                     <div class="relative rounded-3xl overflow-hidden border border-cardborder shadow-2xl bg-cover bg-center p-8" style="background-image: linear-gradient(to right, rgba(6, 9, 17, 0.94) 45%, rgba(15, 23, 42, 0.65)), url('https://images.unsplash.com/photo-1642790106117-e829e14a795f?auto=format&fit=crop&w=1600&q=80');">
                         <div class="max-w-xl space-y-3 relative z-10">
                             <span class="inline-flex items-center space-x-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3 py-1 rounded-full">
-                                <i class="fa-solid fa-coins"></i>
-                                <span>Auditoría y Control de Divisas</span>
+                                <i class="fa-solid fa-coins"></i><span>Auditoría y Control de Divisas</span>
                             </span>
                             <h2 class="text-2xl md:text-3xl font-extrabold text-white leading-tight">Equilibrio Financiero y Partida Doble Automatizada</h2>
-                            <p class="text-xs md:text-sm text-slate-300">Gestiona tus ingresos, salidas de inventario y balances generales con respaldo histórico por año fiscal.</p>
+                            <p class="text-xs md:text-sm text-slate-300">Gestiona tus ingresos, inventarios y balances generales con total seguridad y respaldo histórico.</p>
                             <div class="pt-2 flex flex-wrap gap-3">
-                                <button onclick="switchTab('ventas-express')" class="bg-accent hover:bg-accenthover text-darkbg font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-lg shadow-accent/20">
-                                    <i class="fa-solid fa-bolt mr-1.5"></i> Registrar Venta Rápida
-                                </button>
-                                <button onclick="switchTab('balance')" class="bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700 font-semibold px-5 py-2.5 rounded-xl text-xs transition">
-                                    <i class="fa-solid fa-scale-balanced mr-1.5 text-amber-400"></i> Ver Balance General
-                                </button>
+                                <button onclick="switchTab('ventas-express')" class="bg-accent hover:bg-accenthover text-darkbg font-bold px-5 py-2.5 rounded-xl text-xs transition">Registrar Venta Rápida</button>
+                                <button onclick="switchTab('balance')" class="bg-slate-900/90 text-white border border-slate-700 font-semibold px-5 py-2.5 rounded-xl text-xs transition">Ver Balance General</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- TARJETAS DE INDICADORES -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
-                            <div class="flex justify-between items-center text-slate-400 text-xs mb-2">
-                                <span>Total Activos</span>
-                                <i class="fa-solid fa-wallet text-accent text-base"></i>
-                            </div>
+                            <p class="text-xs text-slate-400 mb-2">Total Activos</p>
                             <h3 id="dash-activos" class="text-2xl font-bold text-white">$0.00</h3>
-                            <p class="text-[11px] text-emerald-400 mt-1">Caja, bancos e inventario</p>
                         </div>
                         <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
-                            <div class="flex justify-between items-center text-slate-400 text-xs mb-2">
-                                <span>Total Pasivos</span>
-                                <i class="fa-solid fa-file-invoice-dollar text-amber-400 text-base"></i>
-                            </div>
+                            <p class="text-xs text-slate-400 mb-2">Total Pasivos</p>
                             <h3 id="dash-pasivos" class="text-2xl font-bold text-amber-400">$0.00</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Deudas y obligaciones</p>
                         </div>
                         <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
-                            <div class="flex justify-between items-center text-slate-400 text-xs mb-2">
-                                <span>Patrimonio Neto</span>
-                                <i class="fa-solid fa-scale-balanced text-sky-400 text-base"></i>
-                            </div>
+                            <p class="text-xs text-slate-400 mb-2">Patrimonio Neto</p>
                             <h3 id="dash-capital" class="text-2xl font-bold text-accent">$0.00</h3>
-                            <p class="text-[11px] text-sky-400 mt-1">Capital contable actual</p>
                         </div>
                         <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
-                            <div class="flex justify-between items-center text-slate-400 text-xs mb-2">
-                                <span>Asientos del Año</span>
-                                <i class="fa-solid fa-database text-emerald-400 text-base"></i>
-                            </div>
+                            <p class="text-xs text-slate-400 mb-2">Asientos del Año</p>
                             <h3 id="dash-asientos" class="text-2xl font-bold text-emerald-400">0</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Movimientos archivados</p>
-                        </div>
-                    </div>
-
-                    <!-- GALERÍA VISUAL DE MERCADOS Y AUDITORÍA -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-cardbg border border-cardborder rounded-2xl overflow-hidden shadow-lg flex flex-col sm:flex-row">
-                            <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=500&q=80" alt="Criptomonedas y Divisas" class="w-full sm:w-40 h-40 sm:h-auto object-cover">
-                            <div class="p-5 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">Activos Digitales y Divisas</span>
-                                    <h4 class="text-base font-bold text-white mt-1">Control Multimonedas</h4>
-                                    <p class="text-xs text-slate-400 mt-1">Monitoreo referencial de tipo de cambio oficial y activos digitales para valoración de cartera.</p>
-                                </div>
-                                <span class="text-xs text-accent font-mono mt-3">Tasa base: C$ 36.6243</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-cardbg border border-cardborder rounded-2xl overflow-hidden shadow-lg flex flex-col sm:flex-row">
-                            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=500&q=80" alt="Auditoría y Balance" class="w-full sm:w-40 h-40 sm:h-auto object-cover">
-                            <div class="p-5 flex flex-col justify-between">
-                                <div>
-                                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Balanza de Comprobación</span>
-                                    <h4 class="text-base font-bold text-white mt-1">Partida Doble Exacta</h4>
-                                    <p class="text-xs text-slate-400 mt-1">Cada cargo en el Debe encuentra su contrapartida automática en el Haber sin descuadres.</p>
-                                </div>
-                                <span class="text-xs text-emerald-400 font-mono mt-3"><i class="fa-solid fa-check-double mr-1"></i> Auditoría Activa</span>
-                            </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- SECCIÓN 2: VENTAS AUTOMÁTICAS -->
+                <!-- VENTAS EXPRESS -->
                 <section id="tab-ventas-express" class="space-y-6 hidden">
-                    <div>
-                        <h2 class="text-lg font-bold text-white">Ventas Express (Partida Doble Automática)</h2>
-                        <p class="text-xs text-slate-400">Registra la venta y el sistema afecta Caja, Ventas, Inventario y Costos al mismo tiempo.</p>
-                    </div>
-
+                    <h2 class="text-lg font-bold text-white">Ventas Express (Partida Doble Automática)</h2>
                     <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Producto o Servicio Vendido</label>
-                                <input type="text" id="sale-concept" placeholder="Ej: Venta de mercancía lote #1" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Precio de Venta (Entra a Caja) ($)</label>
-                                <input type="number" step="0.01" id="sale-price" placeholder="200.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Costo del Producto (Sale de Inventario) ($)</label>
-                                <input type="number" step="0.01" id="sale-cost" placeholder="120.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
-                            </div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Concepto</label><input type="text" id="sale-concept" placeholder="Venta general" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Precio Venta ($)</label><input type="number" step="0.01" id="sale-price" placeholder="200.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Costo Inventario ($)</label><input type="number" step="0.01" id="sale-cost" placeholder="120.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
                         </div>
-                        <div class="flex justify-end pt-2">
-                            <button onclick="processSmartSale()" class="bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold px-6 py-2.5 rounded-xl text-sm transition flex items-center space-x-2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                <span>Procesar Venta y Generar Asientos</span>
-                            </button>
-                        </div>
+                        <div class="flex justify-end"><button onclick="processSmartSale()" class="bg-emerald-500 text-darkbg font-bold px-6 py-2.5 rounded-xl text-sm">Procesar Venta</button></div>
                     </div>
                 </section>
 
-                <!-- SECCIÓN 3: LIBRO DIARIO -->
+                <!-- LIBRO DIARIO -->
                 <section id="tab-libro-diario" class="space-y-6 hidden">
-                    <div>
-                        <h2 class="text-lg font-bold text-white">Libro Diario General</h2>
-                        <p class="text-xs text-slate-400">Historial cronológico de partidas registradas en el año seleccionado.</p>
-                    </div>
-
+                    <h2 class="text-lg font-bold text-white">Libro Diario General</h2>
                     <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-4">
-                        <h3 class="text-sm font-semibold text-accent border-b border-cardborder pb-2">Agregar Asiento Manual</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Fecha del Movimiento</label>
-                                <input type="date" id="entry-date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Concepto</label>
-                                <input type="text" id="entry-concept" placeholder="Ej: Aporte de capital inicial" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-                            </div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Fecha</label><input type="date" id="entry-date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Concepto</label><input type="text" id="entry-concept" placeholder="Movimiento" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Cuenta</label>
-                                <select id="entry-account" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-                                    <option value="Caja / Bancos">Caja / Bancos (Activo)</option>
-                                    <option value="Inventario">Inventario (Activo)</option>
-                                    <option value="Cuentas por Cobrar">Cuentas por Cobrar (Activo)</option>
-                                    <option value="Equipos de Oficina">Equipos de Oficina (Activo)</option>
-                                    <option value="Cuentas por Pagar">Cuentas por Pagar (Pasivo)</option>
-                                    <option value="Préstamos Bancarios">Préstamos Bancarios (Pasivo)</option>
-                                    <option value="Capital Social">Capital Social (Patrimonio)</option>
-                                    <option value="Ingresos por Ventas">Ingresos por Ventas (Ingreso)</option>
-                                    <option value="Gastos Operativos">Gastos Operativos (Gasto)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Tipo</label>
-                                <select id="entry-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-                                    <option value="debe">DEBE (Cargo)</option>
-                                    <option value="haber">HABER (Abono)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-slate-400 mb-1">Monto ($)</label>
-                                <input type="number" step="0.01" id="entry-amount" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-                            </div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Cuenta</label><select id="entry-account" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"><option value="Caja / Bancos">Caja / Bancos</option><option value="Inventario">Inventario</option><option value="Cuentas por Pagar">Cuentas por Pagar</option><option value="Capital Social">Capital Social</option><option value="Ingresos por Ventas">Ingresos por Ventas</option><option value="Gastos Operativos">Gastos Operativos</option></select></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Tipo</label><select id="entry-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"><option value="debe">DEBE</option><option value="haber">HABER</option></select></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Monto ($)</label><input type="number" step="0.01" id="entry-amount" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
                         </div>
-                        <div class="flex justify-end">
-                            <button onclick="addEntry()" class="bg-accent hover:bg-accenthover text-darkbg font-bold px-5 py-2 rounded-xl text-sm transition">
-                                <i class="fa-solid fa-plus mr-1"></i> Registrar
-                            </button>
-                        </div>
+                        <div class="flex justify-end"><button onclick="addEntry()" class="bg-accent text-darkbg font-bold px-5 py-2 rounded-xl text-sm">Registrar</button></div>
                     </div>
-
                     <div class="bg-cardbg border border-cardborder rounded-2xl overflow-hidden shadow-xl">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse text-sm">
-                                <thead>
-                                    <tr class="bg-slate-900 text-slate-400 text-xs border-b border-cardborder">
-                                        <th class="px-6 py-3">Fecha</th>
-                                        <th class="px-6 py-3">Concepto</th>
-                                        <th class="px-6 py-3">Cuenta</th>
-                                        <th class="px-6 py-3 text-right">Debe ($)</th>
-                                        <th class="px-6 py-3 text-right">Haber ($)</th>
-                                        <th class="px-6 py-3 text-center">Borrar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="entries-table-body" class="divide-y divide-cardborder text-slate-300"></tbody>
-                            </table>
-                        </div>
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead><tr class="bg-slate-900 text-slate-400 text-xs border-b border-cardborder"><th class="px-6 py-3">Fecha</th><th class="px-6 py-3">Concepto</th><th class="px-6 py-3">Cuenta</th><th class="px-6 py-3 text-right">Debe</th><th class="px-6 py-3 text-right">Haber</th><th class="px-6 py-3 text-center">Borrar</th></tr></thead>
+                            <tbody id="entries-table-body" class="divide-y divide-cardborder text-slate-300"></tbody>
+                        </table>
                     </div>
                 </section>
 
-                <!-- SECCIÓN 4: CUENTAS T -->
+                <!-- CUENTAS T -->
                 <section id="tab-cuentas-t" class="space-y-6 hidden">
                     <h2 class="text-lg font-bold text-white">Esquemas de Mayor (Cuentas T)</h2>
                     <div id="t-accounts-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
                 </section>
 
-                <!-- SECCIÓN 5: BALANCE GENERAL -->
+                <!-- BALANCE GENERAL -->
                 <section id="tab-balance" class="space-y-6 hidden">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-lg font-bold text-white">Balance General</h2>
-                        <button onclick="window.print()" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-xl">
-                            <i class="fa-solid fa-print mr-1"></i> Imprimir
-                        </button>
-                    </div>
+                    <h2 class="text-lg font-bold text-white">Balance General</h2>
                     <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-slate-900/60 p-4 rounded-xl border border-cardborder">
-                                <h4 class="text-xs font-bold text-accent uppercase mb-3">Activos</h4>
-                                <div id="balance-activos" class="space-y-2 text-sm"></div>
-                                <div class="border-t border-slate-800 mt-4 pt-2 flex justify-between font-bold">
-                                    <span>Total Activos:</span><span id="total-activos" class="text-accent">$0.00</span>
-                                </div>
-                            </div>
-                            <div class="bg-slate-900/60 p-4 rounded-xl border border-cardborder">
-                                <h4 class="text-xs font-bold text-amber-400 uppercase mb-3">Pasivos</h4>
-                                <div id="balance-pasivos" class="space-y-2 text-sm"></div>
-                                <div class="border-t border-slate-800 mt-4 pt-2 flex justify-between font-bold">
-                                    <span>Total Pasivos:</span><span id="total-pasivos" class="text-amber-400">$0.00</span>
-                                </div>
-                            </div>
-                            <div class="bg-slate-900/60 p-4 rounded-xl border border-cardborder">
-                                <h4 class="text-xs font-bold text-emerald-400 uppercase mb-3">Patrimonio</h4>
-                                <div id="balance-capital" class="space-y-2 text-sm"></div>
-                                <div class="border-t border-slate-800 mt-4 pt-2 flex justify-between font-bold">
-                                    <span>Total Capital:</span><span id="total-capital" class="text-emerald-400">$0.00</span>
-                                </div>
-                            </div>
+                            <div class="bg-slate-900/60 p-4 rounded-xl border border-cardborder"><h4 class="text-xs font-bold text-accent uppercase mb-3">Activos</h4><div id="balance-activos" class="space-y-2 text-sm"></div><div class="border-t border-slate-800 mt-4 pt-2 flex justify-between font-bold"><span>Total:</span><span id="total-activos" class="text-accent">$0.00</span></div></div>
+                            <div class="bg-slate-900/60 p-4 rounded-xl border border-cardborder"><h4 class="text-xs font-bold text-amber-400 uppercase mb-3">Pasivos</h4><div id="balance-pasivos" class="space-y-2 text-sm"></div><div class="border-t border-slate-800 mt-4 pt-2 flex justify-between font-bold"><span>Total:</span><span id="total-pasivos" class="text-amber-400">$0.00</span></div></div>
+                            <div class="bg-slate-900/60 p-4 rounded-xl border border-cardborder"><h4 class="text-xs font-bold text-emerald-400 uppercase mb-3">Patrimonio</h4><div id="balance-capital" class="space-y-2 text-sm"></div><div class="border-t border-slate-800 mt-4 pt-2 flex justify-between font-bold"><span>Total:</span><span id="total-capital" class="text-emerald-400">$0.00</span></div></div>
                         </div>
                         <div id="balance-status" class="p-4 rounded-xl text-center text-sm font-medium"></div>
                     </div>
                 </section>
-
             </main>
         </div>
     </div>
 
-    <!-- LÓGICA DE USUARIOS, SESIONES Y CONTABILIDAD -->
+    <!-- SCRIPT DE SEGURIDAD ESTRICTA Y CONTABILIDAD -->
     <script>
-        let authMode = 'login';
         let currentUser = JSON.parse(localStorage.getItem('nexus_active_user')) || null;
         let usersDB = JSON.parse(localStorage.getItem('nexus_users_db')) || {};
 
         document.getElementById('entry-date').valueAsDate = new Date();
 
-        function toggleAuthMode(mode) {
-            authMode = mode;
-            const companyField = document.getElementById('field-company');
-            const submitBtn = document.getElementById('btn-auth-submit');
-            const loginTab = document.getElementById('btn-mode-login');
-            const regTab = document.getElementById('btn-mode-register');
+        function switchAuthView(view) {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-register').classList.add('hidden');
+            document.getElementById('view-recover').classList.add('hidden');
+            document.getElementById('auth-tabs').classList.remove('hidden');
 
-            if(mode === 'register') {
-                companyField.classList.remove('hidden');
-                submitBtn.innerText = 'Crear Cuenta y Entrar';
-                regTab.className = 'py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition';
-                loginTab.className = 'py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition';
-            } else {
-                companyField.classList.add('hidden');
-                submitBtn.innerText = 'Entrar al Sistema';
-                loginTab.className = 'py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition';
-                regTab.className = 'py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition';
+            if(view === 'login') {
+                document.getElementById('view-login').classList.remove('hidden');
+                document.getElementById('tab-login').className = 'py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition';
+                document.getElementById('tab-register').className = 'py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition';
+            } else if(view === 'register') {
+                document.getElementById('view-register').classList.remove('hidden');
+                document.getElementById('tab-register').className = 'py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition';
+                document.getElementById('tab-login').className = 'py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition';
+            } else if(view === 'recover') {
+                document.getElementById('view-recover').classList.remove('hidden');
+                document.getElementById('auth-tabs').classList.add('hidden');
             }
         }
 
-        function handleAuth() {
-            const user = document.getElementById('auth-user').value.trim().toLowerCase();
-            const pass = document.getElementById('auth-pass').value.trim();
-            const company = document.getElementById('auth-company').value.trim() || 'Mi Empresa S.A.';
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
 
-            if(!user || !pass) {
-                alert('Por favor ingresa usuario y contraseña.');
+        function handleRegister() {
+            const company = document.getElementById('reg-company').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const pass = document.getElementById('reg-pass').value.trim();
+
+            if(!company || !email || !pass) {
+                alert('Todos los campos son obligatorios.');
+                return;
+            }
+            if(!validateEmail(email)) {
+                alert('Por favor introduce un formato de correo electrónico válido (ej. usuario@dominio.com).');
+                return;
+            }
+            if(pass.length < 6) {
+                alert('La contraseña debe tener al menos 6 caracteres.');
+                return;
+            }
+            if(usersDB[email]) {
+                alert('Ya existe una cuenta registrada con este correo electrónico.');
                 return;
             }
 
-            if(authMode === 'register') {
-                if(usersDB[user]) {
-                    alert('Este usuario ya existe. Cambia a "Iniciar Sesión".');
-                    return;
-                }
-                usersDB[user] = {
-                    user,
-                    pass,
-                    company,
-                    createdAt: new Date().toLocaleDateString('es-NI'),
-                    entries: []
-                };
-                localStorage.setItem('nexus_users_db', JSON.stringify(usersDB));
-                loginUser(usersDB[user]);
-            } else {
-                if(!usersDB[user] || usersDB[user].pass !== pass) {
-                    alert('Usuario o contraseña incorrectos. Si eres nuevo, haz clic en "Crear Cuenta".');
-                    return;
-                }
-                loginUser(usersDB[user]);
-            }
+            usersDB[email] = {
+                email,
+                pass,
+                company,
+                createdAt: new Date().toLocaleDateString('es-NI'),
+                entries: []
+            };
+            localStorage.setItem('nexus_users_db', JSON.stringify(usersDB));
+            alert('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.');
+            switchAuthView('login');
         }
 
-        function loginUser(userData) {
-            currentUser = userData;
+        function handleLogin() {
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            if(!email || !pass) {
+                alert('Por favor ingresa tu correo y contraseña.');
+                return;
+            }
+            if(!usersDB[email] || usersDB[email].pass !== pass) {
+                alert('Correo o contraseña incorrectos.');
+                return;
+            }
+
+            currentUser = usersDB[email];
             localStorage.setItem('nexus_active_user', JSON.stringify(currentUser));
+            
+            // Limpiar campos de login por seguridad
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-pass').value = '';
+
+            bootApp();
+        }
+
+        function handleRecover() {
+            const email = document.getElementById('recover-email').value.trim().toLowerCase();
+            const newPass = document.getElementById('recover-pass').value.trim();
+
+            if(!email || !newPass) {
+                alert('Completa los campos para recuperar tu cuenta.');
+                return;
+            }
+            if(!usersDB[email]) {
+                alert('Este correo no está registrado en la base de datos.');
+                return;
+            }
+            if(newPass.length < 6) {
+                alert('La nueva contraseña debe tener al menos 6 caracteres.');
+                return;
+            }
+
+            usersDB[email].pass = newPass;
+            localStorage.setItem('nexus_users_db', JSON.stringify(usersDB));
+            alert('¡Contraseña restablecida con éxito! Inicia sesión con tus nuevos datos.');
+            document.getElementById('recover-email').value = '';
+            document.getElementById('recover-pass').value = '';
+            switchAuthView('login');
+        }
+
+        function bootApp() {
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('app-container').classList.add('flex');
 
             document.getElementById('header-company-name').innerText = currentUser.company;
-            document.getElementById('header-user-badge').innerHTML = `<i class="fa-solid fa-user-check text-emerald-400 mr-1.5"></i> ${currentUser.user}`;
-            document.getElementById('account-created-date').innerText = `Cuenta creada: ${currentUser.createdAt}`;
-            
+            document.getElementById('header-user-badge').innerHTML = `<i class="fa-solid fa-user-check text-emerald-400 mr-1.5"></i> ${currentUser.email}`;
+            document.getElementById('account-created-date').innerText = `Registro: ${currentUser.createdAt}`;
             renderAll();
         }
 
         function logout() {
             currentUser = null;
             localStorage.removeItem('nexus_active_user');
+            
+            // LIMPIEZA ABSOLUTA DE CAMPOS AL CERRAR SESIÓN (Evita que queden guardados)
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('reg-company').value = '';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-pass').value = '';
+
             document.getElementById('app-container').classList.add('hidden');
             document.getElementById('app-container').classList.remove('flex');
             document.getElementById('auth-screen').classList.remove('hidden');
+            switchAuthView('login');
         }
 
         function getUserEntries() {
             if(!currentUser) return [];
-            const selectedYear = document.getElementById('fiscal-year').value;
-            const allEntries = usersDB[currentUser.user]?.entries || [];
-            return allEntries.filter(e => e.date.startsWith(selectedYear));
+            const year = document.getElementById('fiscal-year').value;
+            return (usersDB[currentUser.email]?.entries || []).filter(e => e.date.startsWith(year));
         }
 
-        function saveUserEntries(newEntriesList) {
-            usersDB[currentUser.user].entries = newEntriesList;
+        function saveUserEntries(list) {
+            usersDB[currentUser.email].entries = list;
             localStorage.setItem('nexus_users_db', JSON.stringify(usersDB));
             renderAll();
         }
@@ -494,64 +431,57 @@
                 return;
             }
 
-            const all = usersDB[currentUser.user].entries || [];
+            const all = usersDB[currentUser.email].entries || [];
             all.push({ id: Date.now(), date, concept, account, type, amount });
             saveUserEntries(all);
-
             document.getElementById('entry-concept').value = '';
             document.getElementById('entry-amount').value = '';
-            alert('Movimiento guardado en tu base de datos.');
         }
 
         function processSmartSale() {
-            const concept = document.getElementById('sale-concept').value.trim() || 'Venta de Mercadería';
+            const concept = document.getElementById('sale-concept').value.trim() || 'Venta General';
             const price = parseFloat(document.getElementById('sale-price').value);
             const cost = parseFloat(document.getElementById('sale-cost').value);
-            const selectedYear = document.getElementById('fiscal-year').value;
-            const today = new Date();
-            const date = `${selectedYear}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+            const year = document.getElementById('fiscal-year').value;
+            const date = `${year}-01-01`;
 
             if(isNaN(price) || price <= 0 || isNaN(cost) || cost < 0) {
-                alert('Ingresa montos válidos para la venta y el costo.');
+                alert('Ingresa montos válidos.');
                 return;
             }
 
-            const all = usersDB[currentUser.user].entries || [];
-            all.push({ id: Date.now()+1, date, concept: `${concept} (Cobro Caja)`, account: 'Caja / Bancos', type: 'debe', amount: price });
-            all.push({ id: Date.now()+2, date, concept: `${concept} (Ingreso Venta)`, account: 'Ingresos por Ventas', type: 'haber', amount: price });
-            all.push({ id: Date.now()+3, date, concept: `${concept} (Salida Inventario)`, account: 'Inventario', type: 'haber', amount: cost });
-            all.push({ id: Date.now()+4, date, concept: `${concept} (Costo Venta)`, account: 'Gastos Operativos', type: 'debe', amount: cost });
+            const all = usersDB[currentUser.email].entries || [];
+            all.push({ id: Date.now()+1, date, concept: `${concept} (Cobro)`, account: 'Caja / Bancos', type: 'debe', amount: price });
+            all.push({ id: Date.now()+2, date, concept: `${concept} (Ingreso)`, account: 'Ingresos por Ventas', type: 'haber', amount: price });
+            all.push({ id: Date.now()+3, date, concept: `${concept} (Inventario)`, account: 'Inventario', type: 'haber', amount: cost });
+            all.push({ id: Date.now()+4, date, concept: `${concept} (Costo)`, account: 'Gastos Operativos', type: 'debe', amount: cost });
 
             saveUserEntries(all);
             document.getElementById('sale-concept').value = '';
             document.getElementById('sale-price').value = '';
             document.getElementById('sale-cost').value = '';
-            alert('¡Venta procesada y archivada con partida doble automática!');
             switchTab('libro-diario');
         }
 
         function deleteEntry(id) {
-            const all = (usersDB[currentUser.user].entries || []).filter(e => e.id !== id);
+            const all = (usersDB[currentUser.email].entries || []).filter(e => e.id !== id);
             saveUserEntries(all);
         }
 
         function resetUserData() {
             const year = document.getElementById('fiscal-year').value;
-            if(confirm(`¿Eliminar todos los registros del año ${year} para esta cuenta?`)) {
-                const remaining = (usersDB[currentUser.user].entries || []).filter(e => !e.date.startsWith(year));
+            if(confirm(`¿Eliminar registros del año ${year}?`)) {
+                const remaining = (usersDB[currentUser.email].entries || []).filter(e => !e.date.startsWith(year));
                 saveUserEntries(remaining);
             }
         }
 
         function renderAll() {
             const entries = getUserEntries();
-            
-            // Tabla Libro Diario
-            const tbody = document.getElementById('entries-table-body');
-            tbody.innerHTML = entries.length === 0 
-                ? `<tr><td colspan="6" class="text-center py-8 text-slate-500">Sin movimientos registrados en este año fiscal.</td></tr>`
+            document.getElementById('entries-table-body').innerHTML = entries.length === 0 
+                ? `<tr><td colspan="6" class="text-center py-8 text-slate-500">Sin movimientos en este período.</td></tr>`
                 : entries.map(e => `
-                    <tr class="hover:bg-slate-800/40">
+                    <tr class="hover:bg-slate-800/45">
                         <td class="px-6 py-3 font-mono text-xs text-slate-400">${e.date}</td>
                         <td class="px-6 py-3 font-medium text-white">${e.concept}</td>
                         <td class="px-6 py-3 text-slate-300">${e.account}</td>
@@ -561,7 +491,6 @@
                     </tr>
                 `).join('');
 
-            // Cálculos por cuenta
             const balances = {};
             entries.forEach(e => {
                 if(!balances[e.account]) balances[e.account] = { debe: 0, haber: 0 };
@@ -569,40 +498,16 @@
                 if(e.type === 'haber') balances[e.account].haber += e.amount;
             });
 
-            // Cuentas T
-            const tContainer = document.getElementById('t-accounts-container');
-            const accKeys = Object.keys(balances);
-            tContainer.innerHTML = accKeys.length === 0
-                ? `<div class="col-span-2 text-center py-10 text-slate-500">No hay cuentas activas en este período.</div>`
-                : accKeys.map(acc => {
-                    const b = balances[acc];
-                    const net = b.debe - b.haber;
-                    return `
-                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
-                            <h4 class="text-sm font-bold text-white text-center pb-2 border-b border-cardborder mb-3">${acc}</h4>
-                            <div class="grid grid-cols-2 gap-2 text-xs font-mono border-b border-cardborder pb-3">
-                                <div class="border-r border-cardborder pr-2"><p class="text-slate-500 text-[10px]">DEBE</p><p class="text-accent font-bold">$${b.debe.toFixed(2)}</p></div>
-                                <div class="pl-2"><p class="text-slate-500 text-[10px]">HABER</p><p class="text-amber-400 font-bold">$${b.haber.toFixed(2)}</p></div>
-                            </div>
-                            <div class="mt-3 flex justify-between text-xs">
-                                <span class="text-slate-400">Saldo:</span>
-                                <span class="font-mono font-bold text-white">$${Math.abs(net).toFixed(2)} (${net>=0?'Deudor':'Acreedor'})</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-            // Balance y Dashboard
             let activos = 0, pasivos = 0, capital = 0;
             const aDiv = document.getElementById('balance-activos'); aDiv.innerHTML = '';
             const pDiv = document.getElementById('balance-pasivos'); pDiv.innerHTML = '';
             const cDiv = document.getElementById('balance-capital'); cDiv.innerHTML = '';
 
-            ['Caja / Bancos', 'Inventario', 'Cuentas por Cobrar', 'Equipos de Oficina'].forEach(acc => {
+            ['Caja / Bancos', 'Inventario'].forEach(acc => {
                 const v = balances[acc] ? (balances[acc].debe - balances[acc].haber) : 0;
                 if(v !== 0) { activos += v; aDiv.innerHTML += `<div class="flex justify-between"><span>${acc}</span><span class="font-mono">$${v.toFixed(2)}</span></div>`; }
             });
-            ['Cuentas por Pagar', 'Préstamos Bancarios'].forEach(acc => {
+            ['Cuentas por Pagar'].forEach(acc => {
                 const v = balances[acc] ? (balances[acc].haber - balances[acc].debe) : 0;
                 if(v !== 0) { pasivos += v; pDiv.innerHTML += `<div class="flex justify-between"><span>${acc}</span><span class="font-mono">$${v.toFixed(2)}</span></div>`; }
             });
@@ -624,19 +529,18 @@
             const diff = activos - (pasivos + capital);
             if(Math.abs(diff) < 0.01 && activos > 0) {
                 status.className = "p-4 rounded-xl text-center text-sm font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
-                status.innerHTML = `<i class="fa-solid fa-check-circle mr-2"></i> Ecuación Contable Cuadrada (Activo = Pasivo + Patrimonio)`;
+                status.innerHTML = `<i class="fa-solid fa-check-circle mr-2"></i> Balance Cuadrado (Activo = Pasivo + Patrimonio)`;
             } else if(activos === 0) {
                 status.className = "p-4 rounded-xl text-center text-sm font-medium bg-slate-900 text-slate-400 border border-cardborder";
-                status.innerHTML = `Registra asientos para visualizar la comprobación del balance.`;
+                status.innerHTML = `Sin datos de comprobación en este periodo.`;
             } else {
                 status.className = "p-4 rounded-xl text-center text-sm font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20";
-                status.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> Descuadre de $${diff.toFixed(2)}`;
+                status.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> Descuadre detectado: $${diff.toFixed(2)}`;
             }
         }
 
-        // Verificar si ya había sesión abierta
-        if(currentUser && usersDB[currentUser.user]) {
-            loginUser(usersDB[currentUser.user]);
+        if(currentUser && usersDB[currentUser.email]) {
+            bootApp();
         }
     </script>
 </body>
