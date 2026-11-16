@@ -42,4 +42,56 @@
     <header class="bg-cardbg border-b border-cardborder px-6 py-4 flex justify-between items-center shadow-2xl relative overflow-hidden">
         <div class="absolute -right-10 -top-10 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
         <div class="flex items-center space-x-3 relative z-10">
-            <div class="bg-gradient-to-br from-accent/20 to-indigo-500/20 p-2.5 rounded-xl border border-accent/30 text-
+            <div class="bg-gradient-to-br from-accent/20 to-indigo-500/20 p-2.5 rounded-xl border border-accent/30 text-accent shadow-inner">
+                <i class="fa-solid fa-chart-pie text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-extrabold tracking-wider text-white">NEXUS <span class="text-accent">FINANCIAL SUITE</span></h1>
+                <p class="text-xs text-slate-400">Plataforma de Contabilidad Automatizada y Auditoría PyME</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4 relative z-10">
+            <span class="text-xs bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-full text-emerald-400 flex items-center">
+                <i class="fa-solid fa-circle text-[8px] mr-1.5 animate-pulse"></i> Sistema Sincronizado
+            </span>
+            <button onclick="resetData()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg transition">
+                <i class="fa-solid fa-trash-can mr-1"></i> Reiniciar Datos
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- BARRA LATERAL -->
+        <aside class="w-64 bg-cardbg border-r border-cardborder flex flex-col justify-between hidden md:flex">
+            <nav class="p-4 space-y-1.5">
+                <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Módulos del Sistema</p>
+                <a href="#dashboard" onclick="switchTab('dashboard')" id="nav-dashboard" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-accent text-darkbg transition shadow-lg shadow-accent/10">
+                    <i class="fa-solid fa-chart-line w-5"></i>
+                    <span>Panel Analítico</span>
+                </a>
+                <a href="#ventas-express" onclick="switchTab('ventas-express')" id="nav-ventas-express" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-cash-register w-5"></i>
+                    <span>Ventas (Auto-Asiento)</span>
+                </a>
+                <a href="#libro-diario" onclick="switchTab('libro-diario')" id="nav-libro-diario" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-book w-5"></i>
+                    <span>Libro Diario</span>
+                </a>
+                <a href="#cuentas-t" onclick="switchTab('cuentas-t')" id="nav-cuentas-t" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-t w-5"></i>
+                    <span>Cuentas T (Mayor)</span>
+                </a>
+                <a href="#balance" onclick="switchTab('balance')" id="nav-balance" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-scale-balanced w-5"></i>
+                    <span>Balance General</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-cardborder text-xs text-slate-500 text-center font-mono">
+                Nexus Core &bull; 2026
+            </div>
+        </aside>
+
+<!--CONTENIDO PRINCIPAL-->
+        
+
+        <!-- CONTENIDO PRINCIPAL -->
