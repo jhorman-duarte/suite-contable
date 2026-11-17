@@ -24,7 +24,7 @@
 </head>
 <body class="bg-darkbg text-slate-100 font-sans antialiased min-h-screen flex flex-col">
 
-    <!-- PANTALLA DE INICIO DE SESIÓN / REGISTRO / RECUPERACIÓN -->
+    <!-- PANTALLA DE AUTENTICACIÓN -->
     <div id="auth-screen" class="fixed inset-0 z-50 bg-darkbg flex items-center justify-center p-4 bg-cover bg-center" style="background-image: linear-gradient(to bottom right, rgba(6, 9, 17, 0.94), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1920&q=80');">
         <div class="bg-cardbg/95 backdrop-blur-md border border-cardborder p-8 rounded-3xl max-w-md w-full shadow-2xl space-y-6">
             <div class="text-center space-y-2">
@@ -35,13 +35,11 @@
                 <p class="text-xs text-slate-400">Seguridad Financiera y Base de Datos Cifrada</p>
             </div>
 
-            <!-- Pestañas Login / Registro -->
             <div id="auth-tabs" class="grid grid-cols-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
                 <button onclick="switchAuthView('login')" id="tab-login" class="py-2 text-xs font-bold rounded-lg bg-accent text-darkbg transition">Iniciar Sesión</button>
                 <button onclick="switchAuthView('register')" id="tab-register" class="py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition">Crear Cuenta</button>
             </div>
 
-            <!-- Formulario Dinámico -->
             <div class="space-y-4">
                 <div id="view-login" class="space-y-4">
                     <div>
@@ -64,7 +62,7 @@
                 <div id="view-register" class="space-y-4 hidden">
                     <div>
                         <label class="block text-xs font-medium text-slate-400 mb-1">Nombre de Usuario</label>
-                        <input type="text" id="reg-username" placeholder="Ej: German Duarte" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                        <input type="text" id="reg-username" placeholder="Tu Nombre" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-slate-400 mb-1">Nombre de la Empresa o Despacho</label>
@@ -206,16 +204,27 @@
                     </div>
                 </section>
 
-                <!-- VENTAS EXPRESS -->
+                <!-- VENTAS EXPRESS (CAMPOS LIMPIOS SIN VALORES FIJOS) -->
                 <section id="tab-ventas-express" class="space-y-6 hidden">
                     <h2 class="text-lg font-bold text-white">Ventas Express (Partida Doble Automática)</h2>
                     <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div><label class="block text-xs text-slate-400 mb-1">Concepto</label><input type="text" id="sale-concept" placeholder="Ej: Venta de agua" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">Precio Venta ($)</label><input type="number" step="0.01" id="sale-price" placeholder="500.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">Costo Inventario ($)</label><input type="number" step="0.01" id="sale-cost" placeholder="150.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Concepto de la Venta</label>
+                                <input type="text" id="sale-concept" placeholder="Ej: Venta general de mercancía" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Precio de Venta ($)</label>
+                                <input type="number" step="0.01" id="sale-price" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Costo de Inventario ($)</label>
+                                <input type="number" step="0.01" id="sale-cost" placeholder="0.00" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
                         </div>
-                        <div class="flex justify-end"><button onclick="processSmartSale()" class="bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold px-6 py-2.5 rounded-xl text-sm transition">Procesar Venta y Generar Asiento</button></div>
+                        <div class="flex justify-end">
+                            <button onclick="processSmartSale()" class="bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold px-6 py-2.5 rounded-xl text-sm transition">Procesar Venta y Generar Asiento</button>
+                        </div>
                     </div>
                 </section>
 
@@ -225,7 +234,7 @@
                     <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div><label class="block text-xs text-slate-400 mb-1">Fecha</label><input type="date" id="entry-date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
-                            <div><label class="block text-xs text-slate-400 mb-1">Concepto</label><input type="text" id="entry-concept" placeholder="Movimiento" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
+                            <div><label class="block text-xs text-slate-400 mb-1">Concepto</label><input type="text" id="entry-concept" placeholder="Ej: Aporte de capital" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div><label class="block text-xs text-slate-400 mb-1">Cuenta</label><select id="entry-account" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white"><option value="Caja / Bancos">Caja / Bancos</option><option value="Inventario">Inventario</option><option value="Cuentas por Pagar">Cuentas por Pagar</option><option value="Capital Social">Capital Social</option><option value="Ingresos por Ventas">Ingresos por Ventas</option><option value="Gastos Operativos">Gastos Operativos</option></select></div>
@@ -264,10 +273,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT CON PERSISTENCIA DE SESIÓN ROBUSTA -->
     <script>
-        let currentUser = JSON.parse(localStorage.getItem('nexus_active_user')) || null;
         let usersDB = JSON.parse(localStorage.getItem('nexus_users_db')) || {};
+        let currentEmail = sessionStorage.getItem('nexus_logged_email') || null;
 
         document.getElementById('entry-date').valueAsDate = new Date();
 
@@ -349,8 +358,8 @@
                 return;
             }
 
-            currentUser = usersDB[email];
-            localStorage.setItem('nexus_active_user', JSON.stringify(currentUser));
+            currentEmail = email;
+            sessionStorage.setItem('nexus_logged_email', currentEmail);
             
             document.getElementById('login-email').value = '';
             document.getElementById('login-pass').value = '';
@@ -384,19 +393,22 @@
         }
 
         function bootApp() {
+            const user = usersDB[currentEmail];
+            if(!user) return;
+
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('app-container').classList.add('flex');
 
-            document.getElementById('header-company-name').innerText = currentUser.company;
-            document.getElementById('header-user-badge').innerHTML = `<i class="fa-solid fa-user-check text-emerald-400 mr-1.5"></i> ${currentUser.username}`;
-            document.getElementById('account-created-date').innerText = `Registro: ${currentUser.createdAt}`;
+            document.getElementById('header-company-name').innerText = user.company;
+            document.getElementById('header-user-badge').innerHTML = `<i class="fa-solid fa-user-check text-emerald-400 mr-1.5"></i> ${user.username}`;
+            document.getElementById('account-created-date').innerText = `Registro: ${user.createdAt}`;
             renderAll();
         }
 
         function logout() {
-            currentUser = null;
-            localStorage.removeItem('nexus_active_user');
+            currentEmail = null;
+            sessionStorage.removeItem('nexus_logged_email');
             
             document.getElementById('login-email').value = '';
             document.getElementById('login-pass').value = '';
@@ -413,13 +425,13 @@
         }
 
         function getUserEntries() {
-            if(!currentUser) return [];
+            if(!currentEmail || !usersDB[currentEmail]) return [];
             const year = document.getElementById('fiscal-year').value;
-            return (usersDB[currentUser.email]?.entries || []).filter(e => e.date.startsWith(year));
+            return (usersDB[currentEmail].entries || []).filter(e => e.date.startsWith(year));
         }
 
         function saveUserEntries(list) {
-            usersDB[currentUser.email].entries = list;
+            usersDB[currentEmail].entries = list;
             localStorage.setItem('nexus_users_db', JSON.stringify(usersDB));
             renderAll();
         }
@@ -446,7 +458,7 @@
                 return;
             }
 
-            const all = usersDB[currentUser.email].entries || [];
+            const all = usersDB[currentEmail].entries || [];
             all.push({ id: Date.now(), date, concept, account, type, amount });
             saveUserEntries(all);
             document.getElementById('entry-concept').value = '';
@@ -454,21 +466,20 @@
             alert('Movimiento registrado con éxito.');
         }
 
-        // FUNCIÓN REACTIVADA PARA LAS VENTAS AUTOMÁTICAS
         function processSmartSale() {
-            const concept = document.getElementById('sale-concept').value.trim() || 'Venta General';
+            const concept = document.getElementById('sale-concept').value.trim();
             const price = parseFloat(document.getElementById('sale-price').value);
             const cost = parseFloat(document.getElementById('sale-cost').value);
             const year = document.getElementById('fiscal-year').value;
             const today = new Date();
             const date = `${year}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
-            if(isNaN(price) || price <= 0 || isNaN(cost) || cost < 0) {
-                alert('Ingresa montos numéricos válidos.');
+            if(!concept || isNaN(price) || price <= 0 || isNaN(cost) || cost < 0) {
+                alert('Por favor ingresa un concepto y montos numéricos válidos para procesar la venta.');
                 return;
             }
 
-            const all = usersDB[currentUser.email].entries || [];
+            const all = usersDB[currentEmail].entries || [];
             all.push({ id: Date.now()+1, date, concept: `${concept} (Cobro)`, account: 'Caja / Bancos', type: 'debe', amount: price });
             all.push({ id: Date.now()+2, date, concept: `${concept} (Ingreso)`, account: 'Ingresos por Ventas', type: 'haber', amount: price });
             all.push({ id: Date.now()+3, date, concept: `${concept} (Inventario)`, account: 'Inventario', type: 'haber', amount: cost });
@@ -483,19 +494,20 @@
         }
 
         function deleteEntry(id) {
-            const all = (usersDB[currentUser.email].entries || []).filter(e => e.id !== id);
+            const all = (usersDB[currentEmail].entries || []).filter(e => e.id !== id);
             saveUserEntries(all);
         }
 
         function resetUserData() {
             const year = document.getElementById('fiscal-year').value;
             if(confirm(`¿Eliminar registros del año ${year}?`)) {
-                const remaining = (usersDB[currentUser.email].entries || []).filter(e => !e.date.startsWith(year));
+                const remaining = (usersDB[currentEmail].entries || []).filter(e => !e.date.startsWith(year));
                 saveUserEntries(remaining);
             }
         }
 
         function renderAll() {
+            if(!currentEmail) return;
             const entries = getUserEntries();
             document.getElementById('entries-table-body').innerHTML = entries.length === 0 
                 ? `<tr><td colspan="6" class="text-center py-8 text-slate-500">Sin movimientos en este período.</td></tr>`
@@ -517,7 +529,6 @@
                 if(e.type === 'haber') balances[e.account].haber += e.amount;
             });
 
-            // Cuentas T
             const tContainer = document.getElementById('t-accounts-container');
             const accKeys = Object.keys(balances);
             tContainer.innerHTML = accKeys.length === 0
@@ -581,7 +592,8 @@
             }
         }
 
-        if(currentUser && usersDB[currentUser.email]) {
+        // Auto-arranque si ya hay sesión activa en la pestaña
+        if(currentEmail && usersDB[currentEmail]) {
             bootApp();
         }
     </script>
