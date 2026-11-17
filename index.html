@@ -151,6 +151,10 @@
                     <button onclick="switchTab('ventas-express')" id="nav-ventas-express" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
                         <i class="fa-solid fa-cash-register w-5"></i><span>Ventas (Auto-Asiento)</span>
                     </button>
+                    <!-- MÓDULO ANEXADO: FACTURACIÓN DGI / GASTOS -->
+                    <button onclick="switchTab('facturacion-dgi')" id="nav-facturacion-dgi" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-file-invoice-dollar w-5 text-emerald-400"></i><span>Facturas y DGI</span>
+                    </button>
                     <button onclick="switchTab('libro-diario')" id="nav-libro-diario" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
                         <i class="fa-solid fa-book w-5"></i><span>Libro Diario</span>
                     </button>
@@ -168,43 +172,48 @@
             </aside>
 
             <main class="flex-1 overflow-y-auto p-6 bg-darkbg space-y-6">
-                <!-- PANEL PRINCIPAL -->
+                <!-- PANEL PRINCIPAL CON DISEÑO TECNOLÓGICO Y DE TRADING -->
                 <section id="tab-dashboard" class="space-y-6">
-                    <div class="relative rounded-3xl overflow-hidden border border-cardborder shadow-2xl bg-cover bg-center p-8" style="background-image: linear-gradient(to right, rgba(6, 9, 17, 0.94) 45%, rgba(15, 23, 42, 0.65)), url('https://images.unsplash.com/photo-1642790106117-e829e14a795f?auto=format&fit=crop&w=1600&q=80');">
+                    <div class="relative rounded-3xl overflow-hidden border border-cardborder shadow-2xl bg-cover bg-center p-8" style="background-image: linear-gradient(to right, rgba(6, 9, 17, 0.95) 50%, rgba(15, 23, 42, 0.75)), url('https://images.unsplash.com/photo-1642790106117-e829e14a795f?auto=format&fit=crop&w=1600&q=80');">
                         <div class="max-w-xl space-y-3 relative z-10">
-                            <span class="inline-flex items-center space-x-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3 py-1 rounded-full">
-                                <i class="fa-solid fa-coins"></i><span>Auditoría y Control de Divisas</span>
+                            <span class="inline-flex items-center space-x-2 bg-accent/10 border border-accent/30 text-accent text-xs font-bold px-3 py-1 rounded-full">
+                                <i class="fa-solid fa-chart-line"></i><span>Terminal Financiera y Auditoría Pro</span>
                             </span>
                             <h2 class="text-2xl md:text-3xl font-extrabold text-white leading-tight">Equilibrio Financiero y Partida Doble Automatizada</h2>
-                            <p class="text-xs md:text-sm text-slate-300">Gestiona tus ingresos, inventarios y balances generales con total seguridad y respaldo histórico.</p>
+                            <p class="text-xs md:text-sm text-slate-300">Gestiona tus ingresos, facturas membretadas DGI, inventarios y balances con control absoluto y gráficos en tiempo real.</p>
                             <div class="pt-2 flex flex-wrap gap-3">
                                 <button onclick="switchTab('ventas-express')" class="bg-accent hover:bg-accenthover text-darkbg font-bold px-5 py-2.5 rounded-xl text-xs transition">Registrar Venta Rápida</button>
+                                <button onclick="switchTab('facturacion-dgi')" class="bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold px-5 py-2.5 rounded-xl text-xs transition">Nueva Factura DGI</button>
                                 <button onclick="switchTab('balance')" class="bg-slate-900/90 text-white border border-slate-700 font-semibold px-5 py-2.5 rounded-xl text-xs transition">Ver Balance General</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
+                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                            <div class="absolute right-3 top-3 text-accent/10 text-4xl"><i class="fa-solid fa-wallet"></i></div>
                             <p class="text-xs text-slate-400 mb-2">Total Activos</p>
                             <h3 id="dash-activos" class="text-2xl font-bold text-white">$0.00</h3>
                         </div>
-                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
+                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                            <div class="absolute right-3 top-3 text-amber-400/10 text-4xl"><i class="fa-solid fa-file-invoice"></i></div>
                             <p class="text-xs text-slate-400 mb-2">Total Pasivos</p>
                             <h3 id="dash-pasivos" class="text-2xl font-bold text-amber-400">$0.00</h3>
                         </div>
-                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
+                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                            <div class="absolute right-3 top-3 text-accent/10 text-4xl"><i class="fa-solid fa-shield-halved"></i></div>
                             <p class="text-xs text-slate-400 mb-2">Patrimonio Neto</p>
                             <h3 id="dash-capital" class="text-2xl font-bold text-accent">$0.00</h3>
                         </div>
-                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg">
+                        <div class="bg-cardbg border border-cardborder p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                            <div class="absolute right-3 top-3 text-emerald-400/10 text-4xl"><i class="fa-solid fa-chart-pie"></i></div>
                             <p class="text-xs text-slate-400 mb-2">Asientos del Año</p>
                             <h3 id="dash-asientos" class="text-2xl font-bold text-emerald-400">0</h3>
                         </div>
                     </div>
                 </section>
 
-                <!-- VENTAS EXPRESS (CAMPOS LIMPIOS SIN VALORES FIJOS) -->
+                <!-- VENTAS EXPRESS -->
                 <section id="tab-ventas-express" class="space-y-6 hidden">
                     <h2 class="text-lg font-bold text-white">Ventas Express (Partida Doble Automática)</h2>
                     <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-4">
@@ -224,6 +233,85 @@
                         </div>
                         <div class="flex justify-end">
                             <button onclick="processSmartSale()" class="bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold px-6 py-2.5 rounded-xl text-sm transition">Procesar Venta y Generar Asiento</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MÓDULO FACTURACIÓN DGI ANEXADO -->
+                <section id="tab-facturacion-dgi" class="space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Módulo de Facturas y Gastos (Requisitos DGI)</h2>
+                            <p class="text-xs text-slate-400">Factura membretada, cálculo de IVA (15%), cuenta contable, centro de costo y partida doble automática.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-cardbg border border-cardborder p-6 rounded-2xl shadow-xl space-y-4">
+                        <h3 class="text-sm font-bold text-accent pb-2 border-b border-cardborder">1. Datos del Proveedor y Factura</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Número de Factura</label>
+                                <input type="text" id="fact-num" placeholder="Ej: FAC-00124" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Nombre del Proveedor</label>
+                                <input type="text" id="fact-provider" placeholder="Ej: Distribuidora Comercial S.A." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Fecha de Emisión</label>
+                                <input type="date" id="fact-date" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Pie de Imprenta / Datos Fiscales DGI</label>
+                                <input type="text" id="fact-dgi" placeholder="RUC: J031000000000 | Auto. DGI: 123456" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Centro de Costo / Departamento</label>
+                                <input type="text" id="fact-costcenter" placeholder="Ej: Administración / Sucursal Central" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                        </div>
+
+                        <h3 class="text-sm font-bold text-accent pb-2 border-b border-cardborder pt-2">2. Detalle Contable e Impuestos</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Cuenta Contable Destino</label>
+                                <select id="fact-account" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                                    <option value="Gastos Operativos">Gastos de Papelera y Útiles de Oficina</option>
+                                    <option value="Inventario">Compra de Mercadería / Inventario</option>
+                                    <option value="Gastos Operativos">Servicios Básicos (Luz, Agua, Teléfono)</option>
+                                    <option value="Gastos Operativos">Gastos Generales y Mantenimiento</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Subtotal / Monto Base ($)</label>
+                                <input type="number" step="0.01" id="fact-subtotal" placeholder="0.00" oninput="calculateFacturaTotal()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">¿Aplica IVA DGI (15%)?</label>
+                                <div class="flex items-center space-x-3 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2">
+                                    <input type="checkbox" id="fact-apply-iva" onchange="calculateFacturaTotal()" class="w-4 h-4 accent-accent cursor-pointer">
+                                    <span id="fact-iva-label" class="text-xs text-slate-300 font-mono">IVA 15%: $0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center bg-slate-900/60 p-4 rounded-xl border border-cardborder">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Concepto General del Gasto</label>
+                                <input type="text" id="fact-concept" placeholder="Ej: Compra de papelería y suministros" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div class="flex justify-between items-center md:justify-end md:space-x-6 pt-4 md:pt-0">
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Suma Total Factura:</span>
+                                    <strong id="fact-total-display" class="text-xl text-emerald-400 font-mono">$0.00</strong>
+                                </div>
+                                <button onclick="processFacturaDGI()" class="bg-emerald-500 hover:bg-emerald-600 text-darkbg font-bold px-6 py-3 rounded-xl text-sm transition shadow-lg">
+                                    <i class="fa-solid fa-file-circle-check mr-1.5"></i> Generar Comprobante
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -273,12 +361,13 @@
         </div>
     </div>
 
-    <!-- SCRIPT CON PERSISTENCIA DE SESIÓN ROBUSTA -->
+    <!-- SCRIPT CON PERSISTENCIA Y MÓDULO INTEGRADO -->
     <script>
         let usersDB = JSON.parse(localStorage.getItem('nexus_users_db')) || {};
         let currentEmail = sessionStorage.getItem('nexus_logged_email') || null;
 
         document.getElementById('entry-date').valueAsDate = new Date();
+        document.getElementById('fact-date').valueAsDate = new Date();
 
         function switchAuthView(view) {
             document.getElementById('view-login').classList.add('hidden');
@@ -360,7 +449,7 @@
 
             currentEmail = email;
             sessionStorage.setItem('nexus_logged_email', currentEmail);
-            
+
             document.getElementById('login-email').value = '';
             document.getElementById('login-pass').value = '';
 
@@ -409,7 +498,7 @@
         function logout() {
             currentEmail = null;
             sessionStorage.removeItem('nexus_logged_email');
-            
+
             document.getElementById('login-email').value = '';
             document.getElementById('login-pass').value = '';
             document.getElementById('reg-username').value = '';
@@ -437,12 +526,16 @@
         }
 
         function switchTab(tabId) {
-            ['dashboard', 'ventas-express', 'libro-diario', 'cuentas-t', 'balance'].forEach(id => {
-                document.getElementById(`tab-${id}`).classList.add('hidden');
-                document.getElementById(`nav-${id}`).className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition";
+            ['dashboard', 'ventas-express', 'facturacion-dgi', 'libro-diario', 'cuentas-t', 'balance'].forEach(id => {
+                const el = document.getElementById(`tab-${id}`);
+                const nav = document.getElementById(`nav-${id}`);
+                if(el) el.classList.add('hidden');
+                if(nav) nav.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition";
             });
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabId}`).className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-accent text-darkbg transition";
+            const activeEl = document.getElementById(`tab-${tabId}`);
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeEl) activeEl.classList.remove('hidden');
+            if(activeNav) activeNav.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-accent text-darkbg transition";
             renderAll();
         }
 
@@ -490,6 +583,64 @@
             document.getElementById('sale-price').value = '';
             document.getElementById('sale-cost').value = '';
             alert('¡Venta procesada con éxito! Asientos automáticos generados.');
+            switchTab('libro-diario');
+        }
+
+        // LÓGICA DEL MÓDULO DE FACTURACIÓN DGI
+        function calculateFacturaTotal() {
+            const subtotal = parseFloat(document.getElementById('fact-subtotal').value) || 0;
+            const applyIva = document.getElementById('fact-apply-iva').checked;
+            const iva = applyIva ? subtotal * 0.15 : 0;
+            const total = subtotal + iva;
+
+            document.getElementById('fact-iva-label').innerText = `IVA 15%: $${iva.toFixed(2)}`;
+            document.getElementById('fact-total-display').innerText = `$${total.toFixed(2)}`;
+            return { subtotal, iva, total };
+        }
+
+        function processFacturaDGI() {
+            const num = document.getElementById('fact-num').value.trim();
+            const provider = document.getElementById('fact-provider').value.trim();
+            const date = document.getElementById('fact-date').value;
+            const dgiInfo = document.getElementById('fact-dgi').value.trim();
+            const costCenter = document.getElementById('fact-costcenter').value.trim();
+            const accountDest = document.getElementById('fact-account').value;
+            const concept = document.getElementById('fact-concept').value.trim();
+            const { subtotal, iva, total } = calculateFacturaTotal();
+
+            if(!num || !provider || !date || !concept || subtotal <= 0) {
+                alert('Por favor completa los campos principales de la factura y asegúrate de que el subtotal sea mayor a 0.');
+                return;
+            }
+
+            const fullConcept = `Factura #${num} - ${provider} (${concept}) [CC: ${costCenter || 'General'}] [${dgiInfo}]`;
+            const all = usersDB[currentEmail].entries || [];
+            const baseId = Date.now();
+
+            // 1. Débito a la cuenta de Gasto / Inventario (Subtotal)
+            all.push({ id: baseId + 1, date, concept: fullConcept, account: accountDest, type: 'debe', amount: subtotal });
+
+            // 2. Si aplica IVA, Débito a Inventario/IVA Acreditable
+            if(iva > 0) {
+                all.push({ id: baseId + 2, date, concept: `${fullConcept} (IVA DGI)`, account: 'Inventario', type: 'debe', amount: iva });
+            }
+
+            // 3. Crédito a Cuentas por Pagar (Total Factura)
+            all.push({ id: baseId + 3, date, concept: `${fullConcept} (Crédito Proveedor)`, account: 'Cuentas por Pagar', type: 'haber', amount: total });
+
+            saveUserEntries(all);
+
+            // Limpiar formulario
+            document.getElementById('fact-num').value = '';
+            document.getElementById('fact-provider').value = '';
+            document.getElementById('fact-dgi').value = '';
+            document.getElementById('fact-costcenter').value = '';
+            document.getElementById('fact-subtotal').value = '';
+            document.getElementById('fact-apply-iva').checked = false;
+            document.getElementById('fact-concept').value = '';
+            calculateFacturaTotal();
+
+            alert('¡Factura procesada con éxito! Partida doble generada automáticamente.');
             switchTab('libro-diario');
         }
 
@@ -592,7 +743,7 @@
             }
         }
 
-        // Auto-arranque si ya hay sesión activa en la pestaña
+        // Auto-arranque si hay sesión activa
         if(currentEmail && usersDB[currentEmail]) {
             bootApp();
         }
